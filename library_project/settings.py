@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_yasg',
     'library',
     'api',
     'djoser',
@@ -118,6 +119,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',  # Allow any access, permissions handled at view level
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 AUTH_USER_MODEL = 'api.User'
@@ -126,4 +132,23 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ALGORITHM': 'HS256',
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'SHOW_REQUEST_HEADERS': True,
+    'OPERATIONS_SORTER': 'alpha',
+    'TAGS_SORTER': 'alpha',
+    'PERSIST_AUTH': True,
+    'REFETCH_SCHEMA_ON_LOGOUT': True,
+    'DISPLAY_OPERATION_ID': False,
+    'DOC_EXPANSION': 'list',
 }
